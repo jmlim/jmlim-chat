@@ -1,6 +1,8 @@
-target
-m2e-wtp
-*.iml
-/.idea/
 bin
-/dev
+target
+.classpath
+.project
+.settings
+src/main/webapp/META-INF
+.idea
+*.iml
