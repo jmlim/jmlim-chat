@@ -29,8 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userName)
 			throws UsernameNotFoundException, DataAccessException {
-		// TODO Auto-generated method stub
-
 		try {
 			User user = userManager.getUser(userName);
 			return new UserPrincipal(user, getAuthorities(user));
@@ -63,5 +61,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
 		return authorities;
 	}
-
 }

@@ -45,8 +45,8 @@ public class SignController {
 		return "/sign/signup";
 	}
 
-	@RequestMapping(value = "/processSubmit", method = RequestMethod.POST)
 	// http://iluk.tistory.com/entry/valid-400-%EC%97%90%EB%9F%AC
+	@RequestMapping(value = "/processSubmit", method = RequestMethod.POST)
 	public String processSubmit(@ModelAttribute(USER) @Valid User newUser,
 			BindingResult result, SessionStatus status, HttpSession session) {
 

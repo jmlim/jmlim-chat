@@ -12,6 +12,7 @@
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
 	<import resource="classpath*:chat-security-context.xml" />
+
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver" />
@@ -51,7 +52,7 @@
 
 	<!-- Exporter that exposes the Hibernate statistics service via JMX. Autodetects 
 		the service MBean, using its bean name as JMX object name. -->
-	<context:mbean-export />
+	<!-- <context:mbean-export /> -->
 
 	<!-- resource bundle -->
 	<bean id="messageSource"

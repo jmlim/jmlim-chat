@@ -21,15 +21,14 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 /**
  * Echo messages by implementing a Spring {@link WebSocketHandler} abstraction.
+ * 
+ * http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
+ * websocket.html
  */
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
-	// 현재 접속되어 있는 모든 WebSocketSession 정보를 답는다.
+	// 현재 접속되어 있는 모든 WebSocketSession 정보를 답는다. 
 	private Map<String, WebSocketSession> sessionMap = new HashMap<String, WebSocketSession>();
-
-	/*
-	 * @Autowired private UserManager userManager;
-	 */
 
 	/**
 	 * @param session
@@ -140,6 +139,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#afterConnectionEstablished(org.springframework.web.socket.WebSocketSession)
 	 * 
 	 *      접속한 사용자의 웹 소켓 정보를 담는다.
+	 * 
+	 *      ws = new WebSocket(url); url 접근에 성공했을 시 이 메소드를 호출함.
+	 *      웹 소켓의 접근에 성공하고 웹 소켓 연결을 열고 사용할 준비가 된 후에 호출됨.
 	 */
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session)
@@ -150,22 +152,15 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		sessionMap.put(session.getId(), session);
 
 		JSONObject jsonObject = new JSONObject();
+
 		if (sendMessage) {
 			String userName = getUserName(session);
-			/*
-			 * String connectMessage = "{\"userName\": \"" + userName +
-			 * "\",\"message\":\"" + userName + "이 대화방에 들어왔습니다.\"}";
-			 */
 			jsonObject.put("userName", userName);
 			jsonObject.put("message", userName + "이 대화방에 들어왔습니다.");
-
-			// System.out.println(connectMessage);
-
-			// System.out.println(jsonObject.toString());
-
 		}
+
 		jsonObject.put("currentUsers", currentConnectionUsers());
-		// System.out.println(jsonObject.toString());
+		//json으로 구정을 한 후 string 으로 변환하여 세션과 같이 던짐.
 		sendMessage(session, jsonObject.toString());
 		session.sendMessage(new TextMessage(jsonObject.toString()));
 
@@ -174,6 +169,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	/**
 	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#handleTextMessage(org.springframework.web.socket.WebSocketSession,
 	 *      org.springframework.web.socket.TextMessage)
+	 *      
+	 *      새로운 웹 소켓 메시지가 도착할 때 호출됨. ex ) ws.send("your message");
 	 */
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message)
