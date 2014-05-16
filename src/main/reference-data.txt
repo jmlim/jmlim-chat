@@ -1,0 +1,13 @@
+
+websocket
+https://docs.google.com/a/eyeq.co.kr/document/d/18Ly_J0d7jCBkJHOam1sOZa2qLhf6wnoXxTat1XpDhfQ/edit
+http://m.mkexdev.net/98
+http://docs.spring.io/spring/docs/current/spring-framework-reference/html/websocket.html
+http://docs.spring.io/spring/docs/4.0.3.RELEASE/javadoc-api/
+
+validation
+http://codetutr.com/2013/05/28/spring-mvc-form-validation/
+
+git
+http://blog.beany.co.kr/archives/3407
+http://deepseadk.egloos.com/1759843

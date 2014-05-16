@@ -5,7 +5,7 @@
 	 * DOM객체만 로드 후에 socketUrl 업데이트 후 접근.
 	 */
 	$(document).ready(function() {
-		updateUrl('/jmlim-chat/chat/chat-handler');
+		updateUrl(jmlim.chat.contextPath + '/chat/chat-handler');
 		connect();
 
 		$("#btn-input").keyup(function(event) {
@@ -126,7 +126,7 @@
 			});
 
 			var userImg = $(document.createElement("img")).attr({
-				"src" : "http://placehold.it/50/55C1E7/fff&text=U",
+				"src" : jmlim.chat.contextPath + "/sign/uploaded?imageId=" + jmlim.chat.currentUser.image,
 				"alt" : "User Avatar",
 				"class" : "img-circle"
 			});
@@ -165,7 +165,7 @@
 				.addClass("chat-img").addClass("pull-left");
 
 		var chatImg = $(document.createElement("img")).attr({
-			"src" : "http://placehold.it/50/55C1E7/fff&text=U",
+			"src" : "/jmlim-chat/sign/uploaded?imageId=" + jmlim.chat.currentUser.image,
 			"alt" : "User Avatar",
 			"class" : "img-circle"
 		});
@@ -187,7 +187,7 @@
 
 		chatImgSpan.append(chatImg);
 
-		userName = userName ? userName : "나";
+		userName = userName ? userName : jmlim.chat.currentUser.name;
 		primaryFont.text(userName);
 		chatBodyHeader.append(primaryFont);
 		textMuted.append(glyphiconTime).text("12 mins ago");

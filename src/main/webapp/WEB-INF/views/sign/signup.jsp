@@ -22,7 +22,7 @@
 
 		<c:url value="/sign/processSubmit" var="targetUrl" />
 		<form:form action="${targetUrl}" modelattribute="user" method="post"
-			commandName="user" class="form-signup">
+			commandName="user" class="form-signup" enctype="multipart/form-data">
 
 			<label for="user_id">UserId: </label>
 			<form:input path="uid" id="user_id" required="required"
@@ -48,6 +48,10 @@
 				class="form-control" placeholder="Your password..."></form:password>
 			<form:errors path="password" cssclass="error"></form:errors>
 			<br />
+			<label for="file">File</label>
+			<input id="file" type="file" name="file" />
+			<br />
+
 			<input type="submit"
 				class="btn btn-lg btn-primary btn-block signup-margin-top"
 				value="Submit" />

@@ -3,6 +3,7 @@ package org.jmlim.chat.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -51,6 +53,9 @@ public class User extends BaseEntity implements Serializable {
 	@NotEmpty
 	private String password;
 
+	@OneToOne(targetEntity = Image.class, mappedBy = "owner", cascade = CascadeType.ALL)
+	private Image image;
+
 	@Column(name = "ROLES")
 	@ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
 	@CollectionTable(joinColumns = { @JoinColumn(name = "user_id") })
@@ -59,88 +64,50 @@ public class User extends BaseEntity implements Serializable {
 	public User() {
 	}
 
-	/**
-	 * @param uid
-	 * @param name
-	 * @param email
-	 */
-	public User(String uid, String name, String email) {
-		this.uid = uid;
-		this.name = name;
-		this.email = email;
-	}
-
-	/**
-	 * @return the uid
-	 */
 	public String getUid() {
 		return uid;
 	}
 
-	/**
-	 * @param uid
-	 *            the uid to set
-	 */
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the email
-	 */
 	public String getEmail() {
 		return email;
 	}
 
-	/**
-	 * @param email
-	 *            the email to set
-	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	/**
-	 * @return the password
-	 */
 	public String getPassword() {
 		return password;
 	}
 
-	/**
-	 * @param password
-	 *            the password to set
-	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/**
-	 * @return the roles
-	 */
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	public List<String> getRoles() {
 		return roles;
 	}
 
-	/**
-	 * @param roles
-	 *            the roles to set
-	 */
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}

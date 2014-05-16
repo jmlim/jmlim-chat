@@ -16,6 +16,7 @@
 		<s.security.version>3.2.0.RELEASE</s.security.version>
 		<c.dbcp.version>1.4</c.dbcp.version>
 		<c.pool.version>1.6</c.pool.version>
+		<c.io.version>2.4</c.io.version>
 		<c.lang.version>3.2.1</c.lang.version>
 		<c.fileupload.version>1.2.2</c.fileupload.version>
 		<h.entitymanager.version>3.6.10.Final</h.entitymanager.version>
@@ -106,6 +107,11 @@
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>${c.fileupload.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${c.io.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

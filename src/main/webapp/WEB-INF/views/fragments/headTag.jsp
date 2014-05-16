@@ -21,3 +21,12 @@
 	src="<c:url value="/resources/jquery/ui/js/jquery-ui-1.10.4.custom.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/resources/bootstrap/bootstrap-3.1.1-dist/js/bootstrap.js" />"></script>
+<script type="text/javascript">
+	window.jmlim = {};
+	jmlim.chat = {};
+	jmlim.chat.contextPath = '${pageContext.request.contextPath}';
+	jmlim.chat.currentUser = {};
+	jmlim.chat.currentUser.id = '${currentUser.uid}';
+	jmlim.chat.currentUser.name = '${currentUser.name}';
+	jmlim.chat.currentUser.image = '${currentUser.image.id}';
+</script>

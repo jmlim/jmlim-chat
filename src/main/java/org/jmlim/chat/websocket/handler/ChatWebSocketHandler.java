@@ -27,8 +27,90 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
  */
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
-	// 현재 접속되어 있는 모든 WebSocketSession 정보를 답는다. 
+	// 현재 접속되어 있는 모든 WebSocketSession 정보를 답는다.
 	private Map<String, WebSocketSession> sessionMap = new HashMap<String, WebSocketSession>();
+
+	/**
+	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#afterConnectionEstablished(org.springframework.web.socket.WebSocketSession)
+	 * 
+	 *      접속한 사용자의 웹 소켓 정보를 담는다.
+	 * 
+	 *      ws = new WebSocket(url); url 접근에 성공했을 시 이 메소드를 호출함. 웹 소켓의 접근에 성공하고 웹
+	 *      소켓 연결을 열고 사용할 준비가 된 후에 호출됨.
+	 */
+	@Override
+	public void afterConnectionEstablished(WebSocketSession session)
+			throws Exception {
+		String userId = getUserId(session);
+		boolean sendMessage = !isUserIdInWebSocketSessionMap(userId);
+
+		sessionMap.put(session.getId(), session);
+
+		JSONObject jsonObject = new JSONObject();
+
+		if (sendMessage) {
+			String userName = getUserName(session);
+			jsonObject.put("userName", userName);
+			jsonObject.put("message", userName + "이 대화방에 들어왔습니다.");
+		}
+
+		jsonObject.put("currentUsers", currentConnectionUsers());
+		// json으로 구정을 한 후 string 으로 변환하여 세션과 같이 던짐.
+		sendMessage(session, jsonObject.toString());
+		session.sendMessage(new TextMessage(jsonObject.toString()));
+
+	}
+
+	/**
+	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#handleTextMessage(org.springframework.web.socket.WebSocketSession,
+	 *      org.springframework.web.socket.TextMessage)
+	 * 
+	 *      새로운 웹 소켓 메시지가 도착할 때 호출됨. ex ) ws.send("your message");
+	 */
+	@Override
+	public void handleTextMessage(WebSocketSession session, TextMessage message)
+			throws Exception {
+		String userName = getUserName(session);
+		String messagePayLoad = message.getPayload();
+
+		messagePayLoad = StringEscapeUtils.escapeHtml4(messagePayLoad);
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("userName", userName);
+		jsonObject.put("message", messagePayLoad);
+
+		sendMessage(session, jsonObject.toString());
+	}
+
+	/**
+	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#afterConnectionClosed(org.springframework.web.socket.WebSocketSession,
+	 *      org.springframework.web.socket.CloseStatus)
+	 * 
+	 *      접속한 사용자의 웹 소켓 정보를 제거한다.
+	 */
+	@Override
+	public void afterConnectionClosed(WebSocketSession session,
+			CloseStatus status) throws Exception {
+
+		String userId = getUserId(session);
+
+		JSONObject jsonObject = new JSONObject();
+
+		String sessionId = session.getId();
+		if (sessionMap.containsKey(sessionId)) {
+			sessionMap.remove(sessionId);
+		}
+		jsonObject.put("currentUsers", currentConnectionUsers());
+
+		boolean sendMessage = !isUserIdInWebSocketSessionMap(userId);
+		if (sendMessage) {
+			String userName = getUserName(session);
+
+			jsonObject.put("userName", userName);
+			jsonObject.put("message", userName + "이 대화방에서 나갔습니다.");
+		}
+		sendMessage(session, jsonObject.toString());
+	}
 
 	/**
 	 * @param session
@@ -133,88 +215,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 				entrySession.sendMessage(new TextMessage(message));
 			}
 		}
-	}
-
-	/**
-	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#afterConnectionEstablished(org.springframework.web.socket.WebSocketSession)
-	 * 
-	 *      접속한 사용자의 웹 소켓 정보를 담는다.
-	 * 
-	 *      ws = new WebSocket(url); url 접근에 성공했을 시 이 메소드를 호출함.
-	 *      웹 소켓의 접근에 성공하고 웹 소켓 연결을 열고 사용할 준비가 된 후에 호출됨.
-	 */
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session)
-			throws Exception {
-		String userId = getUserId(session);
-		boolean sendMessage = !isUserIdInWebSocketSessionMap(userId);
-
-		sessionMap.put(session.getId(), session);
-
-		JSONObject jsonObject = new JSONObject();
-
-		if (sendMessage) {
-			String userName = getUserName(session);
-			jsonObject.put("userName", userName);
-			jsonObject.put("message", userName + "이 대화방에 들어왔습니다.");
-		}
-
-		jsonObject.put("currentUsers", currentConnectionUsers());
-		//json으로 구정을 한 후 string 으로 변환하여 세션과 같이 던짐.
-		sendMessage(session, jsonObject.toString());
-		session.sendMessage(new TextMessage(jsonObject.toString()));
-
-	}
-
-	/**
-	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#handleTextMessage(org.springframework.web.socket.WebSocketSession,
-	 *      org.springframework.web.socket.TextMessage)
-	 *      
-	 *      새로운 웹 소켓 메시지가 도착할 때 호출됨. ex ) ws.send("your message");
-	 */
-	@Override
-	public void handleTextMessage(WebSocketSession session, TextMessage message)
-			throws Exception {
-		String userName = getUserName(session);
-		String messagePayLoad = message.getPayload();
-
-		messagePayLoad = StringEscapeUtils.escapeHtml4(messagePayLoad);
-
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("userName", userName);
-		jsonObject.put("message", messagePayLoad);
-
-		sendMessage(session, jsonObject.toString());
-	}
-
-	/**
-	 * @see org.springframework.web.socket.handler.AbstractWebSocketHandler#afterConnectionClosed(org.springframework.web.socket.WebSocketSession,
-	 *      org.springframework.web.socket.CloseStatus)
-	 * 
-	 *      접속한 사용자의 웹 소켓 정보를 제거한다.
-	 */
-	@Override
-	public void afterConnectionClosed(WebSocketSession session,
-			CloseStatus status) throws Exception {
-
-		String userId = getUserId(session);
-
-		JSONObject jsonObject = new JSONObject();
-
-		String sessionId = session.getId();
-		if (sessionMap.containsKey(sessionId)) {
-			sessionMap.remove(sessionId);
-		}
-		jsonObject.put("currentUsers", currentConnectionUsers());
-
-		boolean sendMessage = !isUserIdInWebSocketSessionMap(userId);
-		if (sendMessage) {
-			String userName = getUserName(session);
-
-			jsonObject.put("userName", userName);
-			jsonObject.put("message", userName + "이 대화방에서 나갔습니다.");
-		}
-		sendMessage(session, jsonObject.toString());
 	}
 
 	public Map<String, WebSocketSession> getSessionMap() {
