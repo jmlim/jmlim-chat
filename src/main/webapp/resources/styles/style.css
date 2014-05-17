@@ -126,6 +126,10 @@ body {
 	padding: 0;
 }
 
+.chat .chat-img img {
+	width: 48px;
+	height: 48px;
+}
 .chat li {
 	margin-bottom: 10px;
 	padding-bottom: 5px;
