@@ -9,14 +9,14 @@
 	<jsp:include page="../fragments/bodyHeader.jsp" />
 
 	<div class="signin">
-		<form action="<c:url value="/j_spring_security_check" />" method="post"
+		<form action="<c:url value="/sign/signin" />" method="post"
 			class="form-signin">
 			<h2 class="form-signin-heading">로그인 해주세요</h2>
-			<input id="j_username" name="j_username" class="form-control"
+			<input id="username" name="username" class="form-control"
 				placeholder="Your signin id..." required="required"
 				autofocus="autofocus" type="text" /> 
-			<input id="j_password"
-				name="j_password" type="password" class="form-control"
+			<input id="password"
+				name="password" type="password" class="form-control"
 				placeholder="Your password..." required="required" /> 
 			<label class="checkbox"> 
 				<input value="remember-me" type="checkbox">Remember me</input>

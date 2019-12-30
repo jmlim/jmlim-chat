@@ -40,7 +40,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<c:choose>
 					<c:when test="${currentUser != null}">
-					<li><a href="<c:url value="/j_spring_security_logout"/>">로그아웃</a></li>
+					<li><a href="<c:url value="/logout"/>">로그아웃</a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="<c:url value="/sign/signin"/>">로그인</a></li>

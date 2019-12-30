@@ -4,8 +4,12 @@
 <html>
 <head>
 <jsp:include page="../fragments/headTag.jsp" />
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/scripts/jmlim-chat.js" />"></script>
+	src="<c:url value="/scripts/chat.js" />"></script>
 </head>
 <body>
 	<jsp:include page="../fragments/bodyHeader.jsp" />
@@ -50,25 +54,7 @@
 						</div>
 						<div class="panel-body">
 							<ul class="chat">
-								<!-- <li class="left clearfix">
-									<span class="chat-img pull-left">
-										<img src="http://placehold.it/50/55C1E7/fff&text=U"
-											alt="User Avatar" class="img-circle" />
-									</span>
-									<div class="chat-body clearfix">
-										<div class="header">
-											<strong class="primary-font">Masud</strong> 
-											<small
-												class="pull-right text-muted"> 
-												<span class="glyphicon glyphicon-time"></span>12 mins ago
-											</small>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit. Curabitur bibendum ornare dolor, quis ullamcorper
-											ligula sodales.
-										</p>
-									</div>
-								</li> -->
+
 							</ul>
 						</div>
 						<div class="panel-footer">
@@ -82,7 +68,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<!--<div class="col-md-3">
 					<div class="panel panel-primary">
 						<div class="panel-heading">
 							<span class="glyphicon glyphicon-comment">
@@ -90,7 +76,7 @@
 						</div>
 						<div class="panel-body">
 							<ul class="current-users">
-								<!-- <li class="left clearfix">
+								 <li class="left clearfix">
 									<span class="chat-img pull-left">
 										<img src="http://placehold.it/50/55C1E7/fff&text=U"
 											alt="User Avatar" class="img-circle" />
@@ -108,11 +94,11 @@
 											ligula sodales.
 										</p>
 									</div>
-								</li> -->
+								</li>
 							</ul>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<jsp:include page="../fragments/footer.jsp" />

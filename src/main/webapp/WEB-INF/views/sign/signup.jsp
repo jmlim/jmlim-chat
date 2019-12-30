@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
 <jsp:include page="../fragments/headTag.jsp" />
@@ -20,42 +18,79 @@
 			</c:otherwise>
 		</c:choose>
 
-		<c:url value="/sign/processSubmit" var="targetUrl" />
-		<form:form action="${targetUrl}" modelattribute="user" method="post"
-			commandName="user" class="form-signup" enctype="multipart/form-data">
+        <form action="/sign/save" method="post" class="form-signup">
+            <label for="email">Email: </label>
+            <input name="email" id="email" required="required" class="form-control"
+                placeholder="Your email..." />
+            <br />
 
-			<label for="user_id">UserId: </label>
-			<form:input path="uid" id="user_id" required="required"
-				autofocus="autofocus" class="form-control" placeholder="Your id..." />
-			<form:errors path="uid" cssclass="error"></form:errors>
-			<br />
+            <label for="name">Name: </label>
+            <input name="name" id="name" required="required"
+                class="form-control" placeholder="Your name..." />
+            <br />
 
-			<label for="email">Email: </label>
-			<form:input path="email" id="email" required="required"
-				autofocus="autofocus" class="form-control"
-				placeholder="Your email..." />
-			<form:errors path="email" cssclass="error"></form:errors>
-			<br />
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" required="required"
+                class="form-control" placeholder="Your password..."/>
+            <br />
 
-			<label for="name">Name: </label>
-			<form:input path="name" id="name" required="required"
-				class="form-control" placeholder="Your name..." />
-			<form:errors path="name" cssclass="error"></form:errors>
-			<br />
-
-			<label for="password">Password: </label>
-			<form:password path="password" id="password" required="required"
-				class="form-control" placeholder="Your password..."></form:password>
-			<form:errors path="password" cssclass="error"></form:errors>
-			<br />
-			<label for="file">File</label>
-			<input id="file" type="file" name="file" />
-			<br />
-
-			<input type="submit"
-				class="btn btn-lg btn-primary btn-block signup-margin-top"
-				value="Submit" />
-		</form:form>
+            <input type="button"
+                class="btn btn-lg btn-primary btn-block signup-margin-top signup-btn"
+                value="Submit" />
+        </form>
 	</div>
 </body>
+
+<script>
+$.fn.serializeObject = function()
+{
+   var o = {};
+   var a = this.serializeArray();
+   $.each(a, function() {
+       if (o[this.name]) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]];
+           }
+           o[this.name].push(this.value || '');
+       } else {
+           o[this.name] = this.value || '';
+       }
+   });
+   return o;
+};
+    /***
+     * TODO: Wrapping 필요
+     */
+    $(document).ready(function () {
+
+        var $signupBtn = $(".signup-btn");
+        // enter key
+        $("#password").keydown(function (key) {
+            if (key.keyCode == 13) {
+                $signupBtn.trigger("click");
+                return false;
+            }
+        });
+
+        $signupBtn.click(function () {
+            $.ajax({
+                url: '/sign/save',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify($('.form-signup').serializeObject()),
+                success: function (data) {
+                   console.log(data);
+                   alert("가입성공");
+                   location.href = "/";
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            }).done(function() {
+            });
+        });
+    });
+
+</script>
+
 </html>
