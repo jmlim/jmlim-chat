@@ -9,7 +9,7 @@ jpa2(hibernate entity manager)~~
 ~~데이터베이스
 apache-derby 10.10.1.1 사용~~
 
-### 레거시 코드 최신코드로 전환
+### 레거시 코드 spring boot로 전환
 - 기존코드 legecy 브랜치로 뺌.
 - Backend
     - spring 4.0.3 --> spring boot 2.2.2
