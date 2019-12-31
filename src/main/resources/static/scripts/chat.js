@@ -8,7 +8,7 @@
         var socket = new SockJS('/chat/chat-handler');
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, connectionSuccess);
+        stompClient.connect({}, connectionSuccess, connectionClose);
 
 		$("#btn-input").keyup(function(event) {
 			if (event.keyCode == "13") {
@@ -27,7 +27,12 @@
         stompClient.send("/app/chat.newUser", {}, JSON.stringify({
             sender : name,
             type : 'newUser'
-        }))
+        }));
+	}
+
+	function connectionClose(message) {
+    	console.log(message);
+	    alert("서버와의 접속이 끊어졌습니다. \n" + message);
 	}
 
     function sendMessage(event) {
@@ -49,17 +54,28 @@
     }
 
     function onMessageReceived(payload) {
-        var message = JSON.parse(payload.body);
-        console.log('message', message)
-        printMessage(message.content, message.sender);
+        var data = JSON.parse(payload.body);
+        console.log('message', data);
+        if(["Leave","newUser","CHAT"].includes(data.type)) {
+            if(["Leave","newUser"].includes(data.type)) {
+                // 채팅방 인원 정보 갱신.
+                //alert(data.type)
+                console.log('datatype', data.type);
+                stompClient.send("/app/chat.callParticipants", {}, JSON.stringify({}))
+            }
+
+            name =  data.sender;
+            printMessage(data.content, data.sender);
+            return;
+        }
+
+        printParticipants(data);
     }
 
 	/**
 	 * 전송받은 내용을 뿌림.
 	 */
 	function printMessage(message, userName) {
-	    name = userName;
-
 		var chat = $(".chat-main ul.chat");
 		var wrap = $(document.createElement("li")).addClass("left").addClass(
 				"clearfix");
@@ -121,4 +137,47 @@
 		 * ornare dolor, quis ullamcorper ligula sodales. </p> </div> </li>
 		 */
 	}
+
+	/**
+     * 유저정보를 오른쪽에 업데이트
+     */
+    function printParticipants(participantData) {
+        var participantUsers = $(".chat-main ul.participant-users");
+        // 자식노드 전부 삭제 후에 현재 유저를 넣음.
+        participantUsers.empty();
+        $.each(participantData, function(ind, obj) {
+            var wrap = $(document.createElement("li")).attr({
+                "class" : "left clearfix"
+            });
+            var userImgSpan = $(document.createElement("span")).attr({
+                "class" : "user-img pull-left"
+            });
+
+            var userImg = $(document.createElement("img")).attr({
+                "src" : "http://placehold.it/50/55C1E7/fff&text=U",
+                "alt" : "User Avatar",
+                "class" : "img-circle"
+            });
+
+            var userBody = $(document.createElement("div")).attr({
+                "class" : "user-body clearfix"
+            });
+
+            var userBodyHeader = $(document.createElement("div")).addClass(
+                    "header");
+            var primaryFont = $(document.createElement("strong")).addClass(
+                    "primary-font");
+
+            userImgSpan.append(userImg);
+            primaryFont.text(obj.username);
+
+            userBodyHeader.append(primaryFont);
+            userBody.append(userBodyHeader);
+
+            wrap.append(userImgSpan);
+            wrap.append(userBody);
+
+            participantUsers.append(wrap);
+        });
+    }
 })(jQuery);

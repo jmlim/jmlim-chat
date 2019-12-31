@@ -149,32 +149,32 @@ body {
 	color: #777777;
 }
 
-.current-users {
+.participant-users {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.current-users li {
+.participant-users li {
 	margin-bottom: 5px;
 	padding-bottom: 3px;
 	border-bottom: 1px dotted #B3A9A9;
 }
 
-.current-users li.left .user-body {
+.participant-users li.left .user-body {
 	margin-left: 30px;
 }
 
-.current-users li.left .user-img img {
+.participant-users li.left .user-img img {
 	width: 25px;
 	height: 25px;
 }
 
-.current-users li.left .user-body .header {
+.participant-users li.left .user-body .header {
 	font-size: 15px;
 }
 /* 
-.current-users li.right .user-body {
+.participant-users li.right .user-body {
 	margin-right: 60px;
 }
  */

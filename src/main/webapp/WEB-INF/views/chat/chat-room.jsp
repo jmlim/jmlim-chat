@@ -68,15 +68,15 @@
 						</div>
 					</div>
 				</div>
-				<!--<div class="col-md-3">
+				<div class="col-md-3">
 					<div class="panel panel-primary">
 						<div class="panel-heading">
 							<span class="glyphicon glyphicon-comment">
-							</span> 현재 접속자 목록
+							</span> 현재 참여자 목록
 						</div>
 						<div class="panel-body">
-							<ul class="current-users">
-								 <li class="left clearfix">
+							<ul class="participant-users">
+								 <!--<li class="left clearfix">
 									<span class="chat-img pull-left">
 										<img src="http://placehold.it/50/55C1E7/fff&text=U"
 											alt="User Avatar" class="img-circle" />
@@ -94,11 +94,11 @@
 											ligula sodales.
 										</p>
 									</div>
-								</li>
+								</li>-->
 							</ul>
 						</div>
 					</div>
-				</div> -->
+				</div>
 			</div>
 		</div>
 		<jsp:include page="../fragments/footer.jsp" />

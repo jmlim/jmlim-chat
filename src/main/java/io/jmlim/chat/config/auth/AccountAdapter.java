@@ -31,4 +31,8 @@ public class AccountAdapter extends org.springframework.security.core.userdetail
     public String getName() {
         return user.getName();
     }
+
+    public Long getId() {
+        return user.getId();
+    }
 }
