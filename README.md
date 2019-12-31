@@ -14,7 +14,7 @@ apache-derby 10.10.1.1 사용~~
 - Backend
     - spring 4.0.3 --> spring boot 2.2.2
     - jpa2(hibernate entity manager) --> spring data jpa
-    - spring-security 3.2 --> spring boot starter security()
+    - spring-security 3.2 --> spring boot starter security
     - maven --> gradle
     - 사진올리기는 제거 함. (추후 S3를 사용하여 작업 예정)
     - websocket messaging 처리 시 rabbitmq stomp 사용 (설치방법 추후에 정리 예정)
