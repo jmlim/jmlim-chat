@@ -21,34 +21,13 @@
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">사용법</a></li>
-				<!--
-				<li><a href="#">Link</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Separated link</a></li>
-						<li class="divider"></li>
-						<li><a href="#">One more separated link</a></li>
-					</ul></li> -->
-			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<c:choose>
-					<c:when test="${currentUser != null}">
-					<li><a href="<c:url value="/logout"/>">로그아웃</a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="<c:url value="/sign/signin"/>">로그인</a></li>
-						<li><a href="<c:url value="/sign/signup" />">등록</a></li>
-					</c:otherwise>
-				</c:choose>
-				
-				<security:authorize access="hasRole('ROLE_USER')">
+                <security:authorize access="isAnonymous()">
+                    <li><a href="<c:url value="/sign/signin"/>">로그인</a></li>
+                	<li><a href="<c:url value="/sign/signup" />">등록</a></li>
+                </security:authorize>
+				<security:authorize access="isAuthenticated()">
+				    <li><a href="<c:url value="/logout"/>">로그아웃</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">회원메뉴 <b class="caret"></b></a>
