@@ -3,9 +3,11 @@
 {% block content %}
 <div class="signup">
 
-    <!-- TODO -->
+    {% authorize "isAuthenticated()" %}
     <h2 class="form-signup-heading">정보수정</h2>
+    {% else %}
     <h2 class="form-signup-heading">등록 해주세요</h2>
+    {% endAuthorize %}
 
     <form action="/sign/save" method="post" class="form-signup">
         <label for="email">Email: </label>
