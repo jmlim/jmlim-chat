@@ -1,0 +1,85 @@
+{% extends 'layout/base' %}
+
+{% block content %}
+<div class="signup">
+
+    <!-- TODO -->
+    <h2 class="form-signup-heading">정보수정</h2>
+    <h2 class="form-signup-heading">등록 해주세요</h2>
+
+    <form action="/sign/save" method="post" class="form-signup">
+        <label for="email">Email: </label>
+        <input name="email" id="email" required="required" class="form-control"
+               placeholder="Your email..."/>
+        <br/>
+
+        <label for="name">Name: </label>
+        <input name="name" id="name" required="required"
+               class="form-control" placeholder="Your name..."/>
+        <br/>
+
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" required="required"
+               class="form-control" placeholder="Your password..."/>
+        <br/>
+
+        <input type="button"
+               class="btn btn-lg btn-primary btn-block signup-margin-top signup-btn"
+               value="Submit"/>
+    </form>
+</div>
+
+
+<script>
+$.fn.serializeObject = function()
+{
+   var o = {};
+   var a = this.serializeArray();
+   $.each(a, function() {
+       if (o[this.name]) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]];
+           }
+           o[this.name].push(this.value || '');
+       } else {
+           o[this.name] = this.value || '';
+       }
+   });
+   return o;
+};
+/***
+ * TODO: Wrapping 필요
+ */
+$(document).ready(function () {
+
+    var $signupBtn = $(".signup-btn");
+    // enter key
+    $("#password").keydown(function (key) {
+        if (key.keyCode == 13) {
+            $signupBtn.trigger("click");
+            return false;
+        }
+    });
+
+    $signupBtn.click(function () {
+        $.ajax({
+            url: '/sign/save',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify($('.form-signup').serializeObject()),
+            success: function (data) {
+               console.log(data);
+               alert("가입성공");
+               location.href = "/";
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        }).done(function() {
+        });
+    });
+});
+
+</script>
+
+{% endblock content%}

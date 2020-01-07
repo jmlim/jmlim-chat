@@ -184,8 +184,7 @@ body {
 
 .panel-body {
 	overflow-y: scroll;
-	height: 65%;
-	max-height: 700px;
+	height: 700px;
 }
 
 ::-webkit-scrollbar-track {

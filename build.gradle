@@ -23,6 +23,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
@@ -35,19 +36,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
     implementation 'org.springframework.session:spring-session-jdbc'
 
+    implementation 'io.pebbletemplates:pebble-spring-boot-starter:3.1.2'
+    implementation group: 'com.hectorlopezfernandez.pebble', name: 'spring-security-extension', version: '2.0.0-SNAPSHOT'
+
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs
     implementation group: 'org.springframework.security', name: 'spring-security-taglibs'
     // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
-
-    // --- jsp ----
-    // https://mvnrepository.com/artifact/javax.servlet/jstl
-    implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
-    implementation 'org.springframework.boot:spring-boot-starter-tomcat'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-    // --- jsp end ---
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
