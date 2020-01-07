@@ -25,7 +25,9 @@ apache-derby 10.10.1.1 사용~~
         - mysql (docker 로 8.0.17 설치, 테스트용임.)
         - https://jmlim.github.io/docker/2019/07/30/docker-mysql-setup/
 - Frontend
-    - 일단 그대로 둠..
+    - jsp -> pebble template 으로 전환 
+        - https://pebbletemplates.io/wiki/guide/spring-boot-integration  
+        - https://github.com/hectorlf/pebble-spring-security-extension
     - 개선 예정
 
 ### rabbitmq 설치 자료 (ubuntu 18.04) 
