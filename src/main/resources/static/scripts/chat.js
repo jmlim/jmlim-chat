@@ -65,7 +65,8 @@
             }
 
             name =  data.sender;
-            printMessage(data.content, data.sender);
+            var dateTime = moment(data.dateTime).format("YYYY-MM-DD HH:mm:ss");
+            printMessage(data.content, data.sender, dateTime);
             return;
         }
 
@@ -75,7 +76,7 @@
 	/**
 	 * 전송받은 내용을 뿌림.
 	 */
-	function printMessage(message, userName) {
+	function printMessage(message, userName, dateTime) {
 		var chat = $(".chat-main ul.chat");
 		var wrap = $(document.createElement("li")).addClass("left").addClass(
 				"clearfix");
@@ -110,7 +111,7 @@
 		userName = userName ? userName : jmlim.chat.currentUser.name;
 		primaryFont.text(userName);
 		chatBodyHeader.append(primaryFont);
-		textMuted.append(glyphiconTime).text("12 mins ago");
+		textMuted.append(glyphiconTime).text(dateTime);
 		chatBodyHeader.append(textMuted);
 
 		chatBody.append(chatBodyHeader);
