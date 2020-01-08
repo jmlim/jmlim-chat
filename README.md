@@ -20,7 +20,6 @@ apache-derby 10.10.1.1 사용~~
     - websocket messaging 처리 시 rabbitmq stomp 사용 (설치방법 추후에 정리 예정)
     - session 은 일단 db에서 관리
     - 테스트 코드 작성 필요
-    - 버전만 올리는거라 금방 할줄 알았는데 생각보다 시간이 오래걸림...ㅡ.ㅡ
     - 현재 접속자 목록 가져오기 기능은 일단 디비에서 처리하도록 하였음.. (다른 저장소로 변경 예정.)
         - mysql (docker 로 8.0.17 설치, 테스트용임.)
         - https://jmlim.github.io/docker/2019/07/30/docker-mysql-setup/
