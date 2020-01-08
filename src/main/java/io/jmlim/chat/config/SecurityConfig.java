@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/**")//.hasRole(Role.USER.name()) // USER 권한 가진사람만 열람가능
                 .anyRequest().permitAll()
                 .and().formLogin().loginPage("/sign/signin")
-                .failureForwardUrl("/sign/signin?error=1")
+                //.failureForwardUrl("/sign/signin?error=1")
                 .and()
                 .logout().logoutSuccessUrl("/sign/signin");
     }
