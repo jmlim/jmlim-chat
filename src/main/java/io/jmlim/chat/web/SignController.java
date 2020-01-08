@@ -21,7 +21,10 @@ public class SignController {
     private final UserService userService;
 
     @GetMapping("/signin")
-    public String signin(Model model) {
+    public String signin(Model model, String error) {
+        if (error != null)
+            model.addAttribute("error", "Your username and password is invalid.");
+
         return "/sign/signin";
     }
 
