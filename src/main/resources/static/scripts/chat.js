@@ -2,6 +2,7 @@
     var stompClient = null;
     var name = null;
     var email = null;
+    var myAccess = false;
 	/**
 	 * DOM객체만 로드 후에 socketUrl 업데이트 후 접근.
 	 */
@@ -34,6 +35,7 @@
 	function connectionClose(message) {
     	console.log(message);
 	    alert("서버와의 접속이 끊어졌습니다. \n" + message);
+	    //location.href = "/logout";
 	}
 
     function sendMessage(event) {
@@ -67,7 +69,10 @@
                         stompClient.disconnect(disconnectCallback)
                         return;
                     }
-                    email = data.email;
+                    if(!myAccess) {
+                       email = data.email;
+                       myAccess = true;
+                    }
                 }
                 // 채팅방 인원 정보 갱신.
                 stompClient.send("/app/chat.callParticipants", {}, JSON.stringify({}))
