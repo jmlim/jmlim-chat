@@ -67,10 +67,11 @@ public class WebSocketChatController {
             , @LoginUser CurrentUser currentUser
             , SimpMessageHeaderAccessor headerAccessor) {
         String username = currentUser.getName();
-        webSocketChatMessage.enter(username);
-
-        Long userId = currentUser.getId();
         String email = currentUser.getEmail();
+
+        System.out.println(username + " " + email);
+        webSocketChatMessage.enter(username, email);
+        Long userId = currentUser.getId();
 
         ChatParticipantDto chatParticipantDto = ChatParticipantDto.builder()
                 .roomId(1L)

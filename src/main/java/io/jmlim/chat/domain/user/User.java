@@ -1,10 +1,7 @@
 package io.jmlim.chat.domain.user;
 
 import io.jmlim.chat.domain.BaseTimeEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +10,8 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(of = "id")
+@ToString(of = {"id", "name", "email"})
 public class User extends BaseTimeEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 

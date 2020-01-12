@@ -1,6 +1,7 @@
 (function($) {
     var stompClient = null;
     var name = null;
+    var email = null;
 	/**
 	 * DOM객체만 로드 후에 socketUrl 업데이트 후 접근.
 	 */
@@ -55,12 +56,20 @@
 
     function onMessageReceived(payload) {
         var data = JSON.parse(payload.body);
+        var type = data.type;
+
         console.log('message', data);
-        if(["Leave","newUser","CHAT"].includes(data.type)) {
-            if(["Leave","newUser"].includes(data.type)) {
+        if(["Leave","newUser","CHAT"].includes(type)) {
+            if(["Leave","newUser"].includes(type)) {
+                // 중복로그인이 발생한 경우 채팅방에 접속되었던 계정 전부 disconnect 처리
+                if("newUser" === type) {
+                    if(email === data.email) {
+                        stompClient.disconnect(disconnectCallback)
+                        return;
+                    }
+                    email = data.email;
+                }
                 // 채팅방 인원 정보 갱신.
-                //alert(data.type)
-                console.log('datatype', data.type);
                 stompClient.send("/app/chat.callParticipants", {}, JSON.stringify({}))
             }
 
@@ -71,6 +80,12 @@
         }
 
         printParticipants(data);
+    }
+
+    // disconnect 처리 후 로그아웃
+    function disconnectCallback(event) {
+          alert("다른 곳에서 로그인되어 접속을 해지합니다.");
+          location.href = "/logout";
     }
 
 	/**

@@ -1,5 +1,6 @@
 package io.jmlim.chat.config;
 
+import io.jmlim.chat.config.auth.CustomLoginSuccessHandler;
 import io.jmlim.chat.domain.user.Role;
 import io.jmlim.chat.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final CustomLoginSuccessHandler loginSuccessHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -27,11 +30,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/chat/chat-room").hasRole(Role.USER.name())// URL 별 권한관리를 설정하는 옵션의 시작점. (이게 선언되어야 antMatchers 옵션 사용가능
                 //.antMatchers("/**")//.hasRole(Role.USER.name()) // USER 권한 가진사람만 열람가능
                 .anyRequest().permitAll()
-                .and().formLogin().loginPage("/sign/signin")
+                .and().formLogin().successHandler(loginSuccessHandler)
+                .loginPage("/sign/signin")
                 //.failureForwardUrl("/sign/signin?error=1")
                 .and()
                 .logout().logoutSuccessUrl("/sign/signin");
     }
+
+  /*  @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new CustomLoginSuccessHandler();
+    }*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
