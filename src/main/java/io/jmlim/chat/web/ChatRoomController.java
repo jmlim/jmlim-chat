@@ -4,14 +4,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/**
- * @author Administrator
- */
 @Controller
 public class ChatRoomController {
 
     @GetMapping("/chat/chat-room")
     public String chatRoom(Model model) {
-        return "/chat/chat-room";
+        return "/chat/chat-room-list";
+    }
+
+    @GetMapping("/chat/chat-room-detail")
+    public String chatRoomDetail(Model model) {
+        return "/chat/chat-room-detail";
     }
 }

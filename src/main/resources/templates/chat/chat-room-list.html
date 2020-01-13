@@ -1,0 +1,55 @@
+{% extends 'layout/base' %}
+
+{% block content %}
+<!-- Main content -->
+<div class="wrapper">
+    <div class="content-wrapper">
+        <section class="content" style="margin-top: 10px;">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary float-right">
+                            <i class="fa fa-plus-circle"></i> 채팅방 등록
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card-primary card-outline">
+                            <div class="card-body table-responsive">
+                                <table class="table table-hover table-sm table-bordered">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th class="align-middle table-active" style="width: 100px;"><label>채팅방
+                                            번호</label></th>
+                                        <th class="align-middle table-active"><label>채팅방 이름</label></th>
+                                        <th class="align-middle table-active" style="width: 150px;"><label>등록일</label>
+                                        </th>
+                                        <th class="align-middle table-active" style="width: 150px;"><label>수정일</label>
+                                        </th>
+                                        <th colspan="2" style="width: 150px;" class="align-middle table-active">
+                                            <label>Function</label></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="text-center">
+                                    <tr class="text-center bg-gray-light">
+                                        <td class="align-baseline">test1</td>
+                                        <td class="align-baseline">test2</td>
+                                        <td class="align-baseline">test2</td>
+                                        <td class="align-baseline">test2</td>
+                                        <td class="align-baseline" style="width: 60px;">
+                                            <button type="button" class="btn btn-sm btn-outline-primary">수정</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content%}

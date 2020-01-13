@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/chat/chat-room").hasRole(Role.USER.name())// URL 별 권한관리를 설정하는 옵션의 시작점. (이게 선언되어야 antMatchers 옵션 사용가능
+                .antMatchers("/chat/**").hasRole(Role.USER.name())// URL 별 권한관리를 설정하는 옵션의 시작점. (이게 선언되어야 antMatchers 옵션 사용가능
                 //.antMatchers("/**")//.hasRole(Role.USER.name()) // USER 권한 가진사람만 열람가능
                 .anyRequest().permitAll()
                 .and().formLogin().successHandler(loginSuccessHandler)

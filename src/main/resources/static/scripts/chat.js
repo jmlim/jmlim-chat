@@ -26,7 +26,7 @@
     function connectionSuccess() {
         stompClient.subscribe('/topic/chatting', onMessageReceived);
 
-        stompClient.send("/app/chat.newUser", {}, JSON.stringify({
+        stompClient.send("/app/1/chat.newUser", {}, JSON.stringify({
             sender : name,
             type : 'newUser'
         }));
@@ -49,7 +49,7 @@
                 type : 'CHAT'
             };
 
-            stompClient.send("/app/chat.sendMessage", {}, JSON
+            stompClient.send("/app/1/chat.sendMessage", {}, JSON
                     .stringify(chatMessage));
             btnInput.val('');
         }
@@ -75,7 +75,7 @@
                     }
                 }
                 // 채팅방 인원 정보 갱신.
-                stompClient.send("/app/chat.callParticipants", {}, JSON.stringify({}))
+                stompClient.send("/app/1/chat.callParticipants", {}, JSON.stringify({}))
             }
 
             name =  data.sender;

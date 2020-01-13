@@ -8,6 +8,7 @@ import io.jmlim.chat.socket.dto.ChatParticipantDto;
 import io.jmlim.chat.socket.dto.WebSocketChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -30,9 +31,12 @@ public class WebSocketChatController {
      * @param currentUser
      * @return
      */
-    @MessageMapping("/chat.callParticipants")
+    @MessageMapping("/{roomId}/chat.callParticipants")
     @SendTo("/topic/chatting")
-    public List<ChatParticipantDto> callParticipants(@LoginUser CurrentUser currentUser) {
+    public List<ChatParticipantDto> callParticipants(@LoginUser CurrentUser currentUser
+            , @DestinationVariable Long roomId) {
+
+        log.info("roomId : {} ", roomId);
         List<ChatParticipantDto> chatParticipantDtos = chatParticipantRepository.findByRoomId(1L)
                 .stream().map(ChatParticipantDto::new).collect(Collectors.toList());
         return chatParticipantDtos;
@@ -45,10 +49,12 @@ public class WebSocketChatController {
      * @param currentUser
      * @return
      */
-    @MessageMapping("/chat.sendMessage")
+    @MessageMapping("/{roomId}/chat.sendMessage")
     @SendTo("/topic/chatting")
     public WebSocketChatMessage sendMessage(@Payload WebSocketChatMessage webSocketChatMessage
-            , @LoginUser CurrentUser currentUser) {
+            , @LoginUser CurrentUser currentUser
+            , @DestinationVariable Long roomId) {
+        log.info("roomId : {} ", roomId);
         webSocketChatMessage.setSender(currentUser.getName());
         return webSocketChatMessage;
     }
@@ -61,15 +67,16 @@ public class WebSocketChatController {
      * @param headerAccessor
      * @return
      */
-    @MessageMapping("/chat.newUser")
+    @MessageMapping("/{roomId}/chat.newUser")
     @SendTo("/topic/chatting")
     public WebSocketChatMessage addUser(@Payload WebSocketChatMessage webSocketChatMessage
             , @LoginUser CurrentUser currentUser
-            , SimpMessageHeaderAccessor headerAccessor) {
+            , SimpMessageHeaderAccessor headerAccessor
+            , @DestinationVariable Long roomId) {
+        log.info("roomId : {} ", roomId);
         String username = currentUser.getName();
         String email = currentUser.getEmail();
 
-        System.out.println(username + " " + email);
         webSocketChatMessage.enter(username, email);
         Long userId = currentUser.getId();
 

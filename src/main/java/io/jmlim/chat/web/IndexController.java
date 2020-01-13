@@ -8,6 +8,6 @@ public class IndexController {
 
     @GetMapping(value = {"", "/"})
     public String index() {
-        return "redirect:/chat/chat-room";
+        return "redirect:/chat/chat-room-detail";
     }
 }

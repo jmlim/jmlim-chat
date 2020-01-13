@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @Entity
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = false, of = "id")
 @ToString(of = {"id", "name", "email"})
 public class User extends BaseTimeEntity implements Serializable {
     private static final long serialVersionUID = 1L;
