@@ -19,7 +19,7 @@ var Commons = (function () {
             error: function (jqXHR, status, error) {
                console.log(jqXHR);
                alert('ERROR [' + status + '] ' + error);
-           };
+           }
         }).done(function() {
              // Commons.offOverlay();
         });
@@ -38,7 +38,7 @@ var Commons = (function () {
             error: function (jqXHR, status, error) {
                console.log(jqXHR);
                alert('ERROR [' + status + '] ' + error);
-           };
+           }
         });
     };
 
@@ -55,7 +55,7 @@ var Commons = (function () {
             error: function (jqXHR, status, error) {
                console.log(jqXHR);
                alert('ERROR [' + status + '] ' + error);
-           };
+           }
         });
     };
 
@@ -72,7 +72,7 @@ var Commons = (function () {
             error: function (jqXHR, status, error) {
                console.log(jqXHR);
                alert('ERROR [' + status + '] ' + error);
-           };
+           }
         });
     };
 

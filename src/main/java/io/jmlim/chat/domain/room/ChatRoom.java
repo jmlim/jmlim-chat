@@ -1,6 +1,7 @@
 package io.jmlim.chat.domain.room;
 
 import io.jmlim.chat.domain.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,4 +20,9 @@ public class ChatRoom extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Builder
+    public ChatRoom(String name) {
+        this.name = name;
+    }
 }

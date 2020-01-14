@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 
 @Slf4j
 @Controller
@@ -22,8 +24,9 @@ public class SignController {
 
     @GetMapping("/signin")
     public String signin(Model model, String error) {
-        if (error != null)
+        if (Objects.nonNull(error)) {
             model.addAttribute("error", "Your username and password is invalid.");
+        }
 
         return "/sign/signin";
     }
@@ -37,7 +40,7 @@ public class SignController {
     public @ResponseBody
     ResponseEntity<Long> save(@RequestBody UserSaveRequestDto requestDto) {
         // TODO: Validation 처리
-        log.info("requestDto {} : requestDto");
+        log.info("requestDto {} : ", requestDto);
         Long save = userService.save(requestDto);
         return ResponseEntity.ok(save);
     }
