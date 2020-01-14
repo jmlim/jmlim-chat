@@ -33,7 +33,9 @@ public class WebSocketChatEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         Long participantId = (Long) headerAccessor.getSessionAttributes().get("participantId");
         String username = (String) headerAccessor.getSessionAttributes().get("username");
+        Long roomId = (Long) headerAccessor.getSessionAttributes().get("roomId");
         log.info(":::::: username ------------> {} ", username);
+        log.info(":::::: roomId ------------> {} ", roomId);
 
         if (Objects.nonNull(username)) {
             WebSocketChatMessage chatMessage = WebSocketChatMessage.builder()
@@ -42,7 +44,7 @@ public class WebSocketChatEventListener {
                     .content(username + " 님이 퇴장하였습니다.").build();
 
             chatParticipantRepository.deleteById(participantId);
-            messagingTemplate.convertAndSend("/topic/chatting", chatMessage);
+            messagingTemplate.convertAndSend("/topic/chatting." + roomId, chatMessage);
         }
     }
 }

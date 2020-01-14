@@ -2,11 +2,14 @@
     var stompClient = null;
     var name = null;
     var email = null;
+    var roomId = null;
     var myAccess = false;
+
 	/**
 	 * DOM객체만 로드 후에 socketUrl 업데이트 후 접근.
 	 */
 	$(document).ready(function() {
+	    roomId = $("#roomId").val();
         var socket = new SockJS('/chat/chat-handler');
         stompClient = Stomp.over(socket);
 
@@ -24,9 +27,9 @@
 	});
 
     function connectionSuccess() {
-        stompClient.subscribe('/topic/chatting', onMessageReceived);
+        stompClient.subscribe('/topic/chatting.'+roomId, onMessageReceived);
 
-        stompClient.send("/app/1/chat.newUser", {}, JSON.stringify({
+        stompClient.send("/app/"+roomId+"/chat.newUser", {}, JSON.stringify({
             sender : name,
             type : 'newUser'
         }));
@@ -49,7 +52,7 @@
                 type : 'CHAT'
             };
 
-            stompClient.send("/app/1/chat.sendMessage", {}, JSON
+            stompClient.send("/app/"+roomId+"/chat.sendMessage", {}, JSON
                     .stringify(chatMessage));
             btnInput.val('');
         }
@@ -75,7 +78,7 @@
                     }
                 }
                 // 채팅방 인원 정보 갱신.
-                stompClient.send("/app/1/chat.callParticipants", {}, JSON.stringify({}))
+                stompClient.send("/app/"+roomId+"/chat.callParticipants", {}, JSON.stringify({}))
             }
 
             name =  data.sender;

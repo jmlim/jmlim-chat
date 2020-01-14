@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class WebSocketChatController {
 
     private final ChatParticipantRepository chatParticipantRepository;
+    private final SimpMessageSendingOperations simpleMessageSendingOperation;
 
     /**
      * 대화 참여자 목록 호출
@@ -32,14 +33,14 @@ public class WebSocketChatController {
      * @return
      */
     @MessageMapping("/{roomId}/chat.callParticipants")
-    @SendTo("/topic/chatting")
-    public List<ChatParticipantDto> callParticipants(@LoginUser CurrentUser currentUser
+    public void callParticipants(@LoginUser CurrentUser currentUser
             , @DestinationVariable Long roomId) {
 
         log.info("roomId : {} ", roomId);
-        List<ChatParticipantDto> chatParticipantDtos = chatParticipantRepository.findByRoomId(1L)
+        List<ChatParticipantDto> chatParticipantDtos = chatParticipantRepository.findByRoomId(roomId)
                 .stream().map(ChatParticipantDto::new).collect(Collectors.toList());
-        return chatParticipantDtos;
+
+        simpleMessageSendingOperation.convertAndSend("/topic/chatting." + roomId, chatParticipantDtos);
     }
 
     /**
@@ -50,13 +51,12 @@ public class WebSocketChatController {
      * @return
      */
     @MessageMapping("/{roomId}/chat.sendMessage")
-    @SendTo("/topic/chatting")
-    public WebSocketChatMessage sendMessage(@Payload WebSocketChatMessage webSocketChatMessage
+    public void sendMessage(@Payload WebSocketChatMessage webSocketChatMessage
             , @LoginUser CurrentUser currentUser
             , @DestinationVariable Long roomId) {
         log.info("roomId : {} ", roomId);
         webSocketChatMessage.setSender(currentUser.getName());
-        return webSocketChatMessage;
+        simpleMessageSendingOperation.convertAndSend("/topic/chatting." + roomId, webSocketChatMessage);
     }
 
     /**
@@ -68,8 +68,7 @@ public class WebSocketChatController {
      * @return
      */
     @MessageMapping("/{roomId}/chat.newUser")
-    @SendTo("/topic/chatting")
-    public WebSocketChatMessage addUser(@Payload WebSocketChatMessage webSocketChatMessage
+    public void addUser(@Payload WebSocketChatMessage webSocketChatMessage
             , @LoginUser CurrentUser currentUser
             , SimpMessageHeaderAccessor headerAccessor
             , @DestinationVariable Long roomId) {
@@ -81,7 +80,7 @@ public class WebSocketChatController {
         Long userId = currentUser.getId();
 
         ChatParticipantDto chatParticipantDto = ChatParticipantDto.builder()
-                .roomId(1L)
+                .roomId(roomId)
                 .userId(userId)
                 .username(username)
                 .email(email).build();
@@ -89,6 +88,8 @@ public class WebSocketChatController {
 
         headerAccessor.getSessionAttributes().put("participantId", savedParticipant.getId());
         headerAccessor.getSessionAttributes().put("username", username);
-        return webSocketChatMessage;
+        headerAccessor.getSessionAttributes().put("roomId", roomId);
+
+        simpleMessageSendingOperation.convertAndSend("/topic/chatting." + roomId, webSocketChatMessage);
     }
 }
