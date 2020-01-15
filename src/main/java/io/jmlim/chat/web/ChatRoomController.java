@@ -26,6 +26,9 @@ public class ChatRoomController {
 
     @GetMapping("/chat/chat-room-detail/{roomId}")
     public String chatRoomDetail(Model model, @PathVariable Long roomId) {
+
+        chatRoomService.findById(roomId);
+
         model.addAttribute("roomId", roomId);
         return "/chat/chat-room-detail";
     }

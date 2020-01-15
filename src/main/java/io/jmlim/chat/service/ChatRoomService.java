@@ -2,6 +2,7 @@ package io.jmlim.chat.service;
 
 import io.jmlim.chat.domain.room.ChatRoom;
 import io.jmlim.chat.domain.room.ChatRoomRepository;
+import io.jmlim.chat.exception.chat.ChatRoomNotFoundException;
 import io.jmlim.chat.web.dto.ChatRoomDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,12 @@ import java.util.stream.Collectors;
 @Service
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
+
+    public ChatRoomDto findById(Long id) {
+        ChatRoom entity = chatRoomRepository.findById(id)
+                .orElseThrow(() -> new ChatRoomNotFoundException(id));
+        return new ChatRoomDto(entity);
+    }
 
     @Transactional(readOnly = true)
     public List<ChatRoomDto> findAll() {
