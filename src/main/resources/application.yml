@@ -6,6 +6,15 @@ pebble:
   suffix: .html
   cache: false
 
+## 로깅 레벨 추가
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    ## security 로그 보기 위해 설정
+    org.springframework.security: debug
+    io.jmlim.chat: debug
+
 ---
 spring:
   profiles: local

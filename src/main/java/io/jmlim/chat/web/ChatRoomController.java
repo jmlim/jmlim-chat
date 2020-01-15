@@ -6,6 +6,7 @@ import io.jmlim.chat.web.dto.ChatRoomDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,7 @@ public class ChatRoomController {
      * @param requestDto
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_POWERUSER')")
     @PostMapping(value = "/api/chat/chat-room")
     public @ResponseBody
     ResponseEntity<ChatRoom> save(@RequestBody ChatRoomDto requestDto) {

@@ -1,7 +1,5 @@
 package io.jmlim.chat.web;
 
-import io.jmlim.chat.config.auth.AccountAdapter;
-import io.jmlim.chat.config.auth.LoginUser;
 import io.jmlim.chat.service.UserService;
 import io.jmlim.chat.web.dto.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;

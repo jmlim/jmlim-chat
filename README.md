@@ -23,6 +23,11 @@ apache-derby 10.10.1.1 사용~~
     - 현재 접속자 목록 가져오기 기능은 일단 디비에서 처리하도록 하였음.. (다른 저장소로 변경 예정.)
         - mysql (docker 로 8.0.17 설치, 테스트용임.)
         - https://jmlim.github.io/docker/2019/07/30/docker-mysql-setup/
+    - security expression 참고자료
+        - https://www.baeldung.com/spring-security-expressions-basic
+    - Spring security Role Hierarchy 참고자료
+       - https://syaku.tistory.com/376
+     
 - Frontend
     - jsp -> pebble template 으로 전환 
         - https://pebbletemplates.io/wiki/guide/spring-boot-integration  
