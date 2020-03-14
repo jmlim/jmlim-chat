@@ -1,7 +1,9 @@
 package io.jmlim.chat.config;
 
 import io.jmlim.chat.config.auth.LoginUserArgumentResolver;
+import io.jmlim.chat.properties.BrokerRelayProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -14,9 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSocketMessageBroker
+@EnableConfigurationProperties(BrokerRelayProperties.class)
 public class WebSocketChatConfig implements WebSocketMessageBrokerConfigurer {
 
     private final LoginUserArgumentResolver loginUserArgumentResolver;
+
+    private final BrokerRelayProperties brokerRelayProperties;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -33,9 +38,9 @@ public class WebSocketChatConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/app");
         registry.enableStompBrokerRelay("/topic")
-                .setRelayHost("localhost")
-                .setRelayPort(61613)
-                .setClientLogin("guest")
-                .setClientPasscode("guest");
+                .setRelayHost(brokerRelayProperties.getRelayHost())
+                .setRelayPort(brokerRelayProperties.getRelayPort())
+                .setClientLogin(brokerRelayProperties.getClientLogin())
+                .setClientPasscode(brokerRelayProperties.getClientPasscode());
     }
 }

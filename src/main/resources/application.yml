@@ -6,6 +6,13 @@ pebble:
   suffix: .html
   cache: false
 
+broker:
+  relay:
+    relay-host: localhost
+    relay-port: 61613
+    client-login: jmlim
+    client-passcode: eyeq
+
 ## 로깅 레벨 추가
 logging:
   level:
@@ -23,8 +30,7 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: jdbc:mysql://10.30.175.15:3306/jmlim_chat?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/jmlim_chat?allowPublicKeyRetrieval=true&useSSL=false
     username: jmlim
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
-
