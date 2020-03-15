@@ -3,10 +3,8 @@
 {% block content %}
 
 <div class="signin">
-    <form action="/sign/signin" method="post"
-          class="form-signin">
+    <form id="login-form" class="form-signin">
         <h2 class="form-signin-heading">로그인 해주세요</h2>
-        {{error}}
         <input id="username" name="username" class="form-control"
                placeholder="Your signin id..." required="required"
                autofocus="autofocus" type="text"/>
@@ -17,9 +15,43 @@
                 <input value="remember-me" type="checkbox">Remember me</input>
             </label>-->
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit"
+        <button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button"
                 value="Authenticate">로그인
         </button>
     </form>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $loginBtn = $("#login-btn");
+
+        $loginBtn.click(function () {
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify($('#login-form').serializeObject()),
+                success: function (data, textStatus, request) {
+                    console.log("data", data);
+                    console.log("textStatus",textStatus)
+                    console.log("request",request)
+                    if(request) {
+                        var authorization = request.getResponseHeader(Constants.AUTHORIZATION);
+                        console.log(authorization);
+                        Commons.setCookie('access_token', authorization, 1);
+                        location.href = "/";
+                    } else {
+                        alert("로그인 실패");
+                    }
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            }).done(function() {
+                console.log("done");
+            });
+        });
+    });
+</script>
+
 {% endblock content%}

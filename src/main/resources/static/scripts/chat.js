@@ -4,6 +4,7 @@
     var email = null;
     var roomId = null;
     var myAccess = false;
+    var access_token = Commons.getCookie(Constants.ACCESS_TOKEN);
 
 	/**
 	 * DOM객체만 로드 후에 socketUrl 업데이트 후 접근.
@@ -13,7 +14,8 @@
         var socket = new SockJS('/chat/chat-handler');
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, connectionSuccess, connectionClose);
+        stompClient.connect({'Authorization': access_token},
+            connectionSuccess, connectionClose);
 
 		$("#btn-input").keyup(function(event) {
 			if (event.keyCode == "13") {
@@ -29,7 +31,7 @@
     function connectionSuccess() {
         stompClient.subscribe('/topic/chatting.'+roomId, onMessageReceived);
 
-        stompClient.send("/app/"+roomId+"/chat.newUser", {}, JSON.stringify({
+        stompClient.send("/app/"+roomId+"/chat.newUser", {'Authorization': access_token}, JSON.stringify({
             sender : name,
             type : 'newUser'
         }));
@@ -52,7 +54,7 @@
                 type : 'CHAT'
             };
 
-            stompClient.send("/app/"+roomId+"/chat.sendMessage", {}, JSON
+            stompClient.send("/app/"+roomId+"/chat.sendMessage", {'Authorization': access_token}, JSON
                     .stringify(chatMessage));
             btnInput.val('');
         }
@@ -64,8 +66,8 @@
         var type = data.type;
 
         console.log('message', data);
-        if(["Leave","newUser","CHAT"].includes(type)) {
-            if(["Leave","newUser"].includes(type)) {
+        if(["Leave","newUser","CHAT"].indexOf(type) > -1) {
+            if(["Leave","newUser"].indexOf(type) > -1) {
                 // 중복로그인이 발생한 경우 채팅방에 접속되었던 계정 전부 disconnect 처리
                 if("newUser" === type) {
                     if(email === data.email) {
@@ -78,7 +80,7 @@
                     }
                 }
                 // 채팅방 인원 정보 갱신.
-                stompClient.send("/app/"+roomId+"/chat.callParticipants", {}, JSON.stringify({}))
+                stompClient.send("/app/"+roomId+"/chat.callParticipants", {'Authorization': access_token}, JSON.stringify({}))
             }
 
             name =  data.sender;
@@ -93,7 +95,7 @@
     // disconnect 처리 후 로그아웃
     function disconnectCallback(event) {
           alert("다른 곳에서 로그인되어 접속을 해지합니다.");
-          location.href = "/logout";
+          Commons.logout();
     }
 
 	/**

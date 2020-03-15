@@ -1,7 +1,9 @@
 package io.jmlim.chat.config;
 
-import io.jmlim.chat.config.auth.CustomLoginSuccessHandler;
+import io.jmlim.chat.config.jwt.filter.JwtAuthenticationFilter;
+import io.jmlim.chat.config.jwt.filter.JwtAuthorizationFilter;
 import io.jmlim.chat.domain.user.Role;
+import io.jmlim.chat.service.ChatService;
 import io.jmlim.chat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
@@ -25,31 +28,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
 
-    private final PasswordEncoder passwordEncoder;
+    private final ChatService chatService;
 
-    private final CustomLoginSuccessHandler loginSuccessHandler;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/chat/**").hasRole(Role.USER.name())// URL 별 권한관리를 설정하는 옵션의 시작점. (이게 선언되어야 antMatchers 옵션 사용가능
-                //.antMatchers("/**")//.hasRole(Role.USER.name()) // USER 권한 가진사람만 열람가능
-                .anyRequest().permitAll()
-                .expressionHandler(expressionHandler())
-                .and().formLogin().successHandler(loginSuccessHandler)
-                .loginPage("/sign/signin")
-                //.failureForwardUrl("/sign/signin?error=1")
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .logout().logoutSuccessUrl("/sign/signin");
+                // add jwt filters (1. authentication, 2. authorization)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), chatService))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+                .authorizeRequests()
+                .antMatchers("/api/chat/**").hasRole(Role.USER.name())// URL 별 권한관리를 설정하는 옵션의 시작점. (이게 선언되어야 antMatchers 옵션 사용가능
+                .anyRequest().permitAll();
     }
-
-  /*  @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        return new CustomLoginSuccessHandler();
-    }*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

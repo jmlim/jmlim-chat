@@ -1,4 +1,16 @@
+var Constants = (function () {
+    var AUTHORIZATION = "Authorization";
+    var ACCESS_TOKEN = "access_token";
+
+    return {
+        AUTHORIZATION: AUTHORIZATION,
+        ACCESS_TOKEN: ACCESS_TOKEN,
+    }
+})();
+
 var Commons = (function () {
+
+
     /**
      * 공통 ajax call 함수
      * @param requestUrl
@@ -13,12 +25,15 @@ var Commons = (function () {
             cache: false,
             // data: params,
             dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(Constants.AUTHORIZATION, Commons.getCookie(Constants.ACCESS_TOKEN));
+            },
             success: function(resp) {
                callback(resp);
             },
             error: function (jqXHR, status, error) {
-               console.log(jqXHR);
-               alert('ERROR [' + status + '] ' + error);
+                console.log(jqXHR);
+                loginChecker(jqXHR);
            }
         }).done(function() {
              // Commons.offOverlay();
@@ -32,12 +47,15 @@ var Commons = (function () {
             data: JSON.stringify(params),
             contentType: 'application/json',
             dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(Constants.AUTHORIZATION, Commons.getCookie(Constants.ACCESS_TOKEN));
+            },
             success: function(resp) {
                callback(resp);
             },
             error: function (jqXHR, status, error) {
-               console.log(jqXHR);
-               alert('ERROR [' + status + '] ' + error);
+                console.log(jqXHR);
+                loginChecker(jqXHR);
            }
         });
     };
@@ -49,12 +67,15 @@ var Commons = (function () {
             data: JSON.stringify(params),
             contentType: 'application/json',
             dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(Constants.AUTHORIZATION, Commons.getCookie(Constants.ACCESS_TOKEN));
+            },
             success: function(resp) {
                callback(resp);
             },
             error: function (jqXHR, status, error) {
                console.log(jqXHR);
-               alert('ERROR [' + status + '] ' + error);
+               loginChecker(jqXHR);
            }
         });
     };
@@ -66,12 +87,15 @@ var Commons = (function () {
             data: JSON.stringify(params),
             contentType: 'application/json',
             dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(Constants.AUTHORIZATION, Commons.getCookie(Constants.ACCESS_TOKEN));
+            },
             success: function(resp) {
                callback(resp);
             },
             error: function (jqXHR, status, error) {
                console.log(jqXHR);
-               alert('ERROR [' + status + '] ' + error);
+               loginChecker(jqXHR);
            }
         });
     };
@@ -81,7 +105,7 @@ var Commons = (function () {
     };
 
     var isEmpty = function (obj) {
-        if (typeof obj == 'undefined' || obj === null || obj === '') return true;
+        if (typeof obj == 'undefined' || obj === null || obj === '' || obj == {} || obj == '{}') return true;
         if (typeof obj == 'number' && isNaN(obj)) return true;
         if (typeof obj == 'object' && Object.keys(obj).length === 0) return true;
         if (obj instanceof Date && isNaN(Number(obj))) return true;
@@ -105,6 +129,41 @@ var Commons = (function () {
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
 
+    var setCookie = function (name, value, hour) {
+        // format ex) Sat, 05 Jan 2019 14:53:14
+        document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + moment().add(hour, 'hour').format('ddd, DD MMM YYYY HH:mm:ss') + ';path=/;';
+    };
+
+    var getCookie = function (name) {
+        var value = decodeURIComponent(document.cookie).match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return value ? value[2] : '{}';
+    };
+
+    var removeCookie = function (name) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;';
+    };
+
+    var loginChecker = function(jqXHR) {
+        var accessToken = Commons.getCookie(Constants.ACCESS_TOKEN)
+        if(jqXHR
+            && jqXHR.responseJSON
+            && jqXHR.responseJSON.status == "403") {
+            if(Commons.isEmpty(accessToken)) {
+                alert("로그인 해주세요.");
+                location.href = "/sign/signin";
+            } else {
+                alert("접근이 거부되었습니다. (권한이 없습니다.)");
+            }
+        }
+    }
+
+    var logout = function () {
+        var accessToken = Commons.removeCookie(Constants.ACCESS_TOKEN);
+        if(Commons.isEmpty(accessToken)) {
+            location.href = "/sign/signin";
+        }
+    }
+
     return {
         ajaxGet: ajaxGet,
         ajaxPost: ajaxPost,
@@ -114,6 +173,11 @@ var Commons = (function () {
         isNotEmpty: isNotEmpty,
         initCap: initCap,
         null2Space: null2Space,
-        htmlDecode: htmlDecode
+        htmlDecode: htmlDecode,
+        setCookie: setCookie,
+        getCookie: getCookie,
+        removeCookie: removeCookie,
+        loginChecker: loginChecker,
+        logout: logout
     }
 })();

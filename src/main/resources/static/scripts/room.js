@@ -1,6 +1,5 @@
 var Room = (function () {
 
-
     // TODO: Overlay
     getListRenderAll();
 

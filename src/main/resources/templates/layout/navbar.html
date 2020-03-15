@@ -16,26 +16,38 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse"
              id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                {% authorize "isAuthenticated()" %}
-                <li><a href="/logout">로그아웃</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle"
-                       data-toggle="dropdown">회원메뉴 <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/sign/signup">정보수정</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">프로그램 정보</a></li>
-                        <li><a href="/sign/deleteUser">회원탈퇴</a></li>
-                    </ul>
-                </li>
-                {% else %}
-                <li><a href="/sign/signin">로그인</a></li>
-                <li><a href="/sign/signup">등록</a></li>
-                {% endAuthorize %}
+            <ul id="navbar-right" class="nav navbar-nav navbar-right">
+
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container-fluid -->
 </nav>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var accessToken = Commons.getCookie(Constants.ACCESS_TOKEN);
+        var $navbarRight = $("#navbar-right")
+        // 귀찬트아.. 어차피 추후에 버릴 UI.. ㅡ.ㅡ
+        if(Commons.isEmpty(accessToken)) {
+            $navbarRight.append("<li><a href=\"/sign/signin\">로그인</a></li>\n" +
+                                "<li><a href=\"/sign/signup\">등록</a></li>")
+        } else {
+            $navbarRight.append("<li><a id=\"logout\">로그아웃</a></li>\n" +
+                                "<li class=\"dropdown\">\n" +
+                                "    <a href=\"#\" class=\"dropdown-toggle\"\n" +
+                                "       data-toggle=\"dropdown\">회원메뉴 <b class=\"caret\"></b></a>\n" +
+                                "    <ul class=\"dropdown-menu\">\n" +
+                                "        <li><a href=\"/sign/signup\">정보수정</a></li>\n" +
+                                "        <li class=\"divider\"></li>\n" +
+                                "        <li><a href=\"#\">프로그램 정보</a></li>\n" +
+                                "        <li><a href=\"/sign/deleteUser\">회원탈퇴</a></li>\n" +
+                                "    </ul>\n" +
+                                "</li>");
+        }
+
+        $("#logout").on("click", function(e) {
+           Commons.logout();
+        })
+    });
+</script>

@@ -3,11 +3,8 @@
 {% block content %}
 <div class="signup">
 
-    {% authorize "isAuthenticated()" %}
+
     <h2 class="form-signup-heading">정보수정</h2>
-    {% else %}
-    <h2 class="form-signup-heading">등록 해주세요</h2>
-    {% endAuthorize %}
 
     <form action="/sign/save" method="post" class="form-signup">
         <label for="email">Email: </label>
@@ -33,28 +30,20 @@
 
 
 <script>
-$.fn.serializeObject = function()
-{
-   var o = {};
-   var a = this.serializeArray();
-   $.each(a, function() {
-       if (o[this.name]) {
-           if (!o[this.name].push) {
-               o[this.name] = [o[this.name]];
-           }
-           o[this.name].push(this.value || '');
-       } else {
-           o[this.name] = this.value || '';
-       }
-   });
-   return o;
-};
 /***
  * TODO: Wrapping 필요
  */
 $(document).ready(function () {
 
     var $signupBtn = $(".signup-btn");
+    var $formSignupHeading = $(".form-signup-heading");
+
+    if(Commons.getCookie(Constants.ACCESS_TOKEN)) {
+        $formSignupHeading.text("정보수정");
+    } else {
+        $formSignupHeading.text("등록 해주세요");
+    }
+
     // enter key
     $("#password").keydown(function (key) {
         if (key.keyCode == 13) {

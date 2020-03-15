@@ -1,0 +1,19 @@
+
+### 토큰 발급 받기
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "jeongmuklim@naver.com",
+  "password": "1234"
+}
+
+###
+GET http://localhost:8080/chat/chat-room
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNTg0MjYzMzEwLCJ1c2VybmFtZSI6Implb25nbXVrbGltQG5hdmVyLmNvbSJ9.akOuqdG4fAZCFDeQUgrbb3fMWDozNxPa2EcfnjBiHSI
+
+###
+GET http://localhost:8080/api/chat/chat-room
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNTg0MjYzMzEwLCJ1c2VybmFtZSI6Implb25nbXVrbGltQG5hdmVyLmNvbSJ9.akOuqdG4fAZCFDeQUgrbb3fMWDozNxPa2EcfnjBiHSI
+
+###

@@ -30,7 +30,13 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/jmlim_chat?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://192.168.219.108:3306/jmlim_chat?allowPublicKeyRetrieval=true&useSSL=false
     username: jmlim
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+
